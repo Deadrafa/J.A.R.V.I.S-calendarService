@@ -75,18 +75,26 @@ func (cal *Calendar) CreateEvent(calEv models.CalendarEvent) error {
 	return nil
 }
 
-func (cal *Calendar) DeleteEvent(eventId string) error {
-	errDelEv := cal.Srv.Events.Delete("primary", eventId).Do()
-	if errDelEv != nil {
-		return fmt.Errorf("failed to delete event: %v", errDelEv)
+func (cal *Calendar) DeleteEvent(startTime models.DateTimeAndZone) error {
+	listEvents, err := cal.Srv.Events.List("primary").Do()
+	if err != nil {
+		return fmt.Errorf("failed to delete event: %v", err)
 	}
+	for _, item := range listEvents.Items {
+		if item.Start.DateTime == startTime.DateTime && item.Start.TimeZone == startTime.TimeZone {
+			if err := cal.Srv.Events.Delete("primary", item.Id).Do(); err != nil {
+				return fmt.Errorf("failed to delete event in range: %v", err)
+			}
+		}
+	}
+
 	return nil
 }
 
 func (cal *Calendar) ListEvents() error {
 	listEvents, err := cal.Srv.Events.List("primary").Do()
 	if err != nil {
-		return fmt.Errorf("failed to delete event: %v", err)
+		return fmt.Errorf("failed to ListEvents(): %v", err)
 	}
 
 	resp, err := listEvents.MarshalJSON()

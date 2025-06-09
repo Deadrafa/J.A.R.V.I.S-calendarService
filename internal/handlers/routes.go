@@ -22,6 +22,7 @@ func NewHandler(service repository.CalendarService, name, pass string) *Handler 
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.Default()
 	router.POST("/create-event", h.createEventHandler)
+	router.DELETE("/delete-event", h.deleteEventHandler)
 	return router
 
 }

@@ -7,5 +7,5 @@ import (
 type CalendarService interface {
 	CreateEvent(calEv models.CalendarEvent) error
 	ListEvents() error
-	DeleteEvent(eventId string) error
+	DeleteEvent(startTime models.DateTimeAndZone) error
 }
