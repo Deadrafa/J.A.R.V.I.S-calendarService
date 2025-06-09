@@ -44,16 +44,16 @@ func (cal *Calendar) CreateEvent(calEv models.CalendarEvent) error {
 		EventAttendees = append(EventAttendees, &FieldAttendees)
 	}
 	event := calendar.Event{
-		Summary:     "Встреча с клиентом",
-		Location:    "Офис, 5 этаж",
-		Description: "Обсуждение нового проекта",
+		Summary:     calEv.Summary,
+		Location:    calEv.Location,
+		Description: calEv.Description,
 		Start: &calendar.EventDateTime{
-			DateTime: "2025-06-08T14:00:00+07:00",
-			TimeZone: "Asia/Novosibirsk",
+			DateTime: calEv.StartDate.DateTime,
+			TimeZone: calEv.StartDate.TimeZone,
 		},
 		End: &calendar.EventDateTime{
-			DateTime: "2025-06-08T15:30:00+07:00",
-			TimeZone: "Asia/Novosibirsk",
+			DateTime: calEv.EndDate.DateTime,
+			TimeZone: calEv.EndDate.TimeZone,
 		},
 		Attendees: EventAttendees,
 		Reminders: &calendar.EventReminders{
@@ -72,5 +72,28 @@ func (cal *Calendar) CreateEvent(calEv models.CalendarEvent) error {
 	}
 
 	fmt.Printf("Event created successfully!\nView it at: %s\n", createdEvent.HtmlLink)
+	return nil
+}
+
+func (cal *Calendar) DeleteEvent(eventId string) error {
+	errDelEv := cal.Srv.Events.Delete("primary", eventId).Do()
+	if errDelEv != nil {
+		return fmt.Errorf("failed to delete event: %v", errDelEv)
+	}
+	return nil
+}
+
+func (cal *Calendar) ListEvents() error {
+	listEvents, err := cal.Srv.Events.List("primary").Do()
+	if err != nil {
+		return fmt.Errorf("failed to delete event: %v", err)
+	}
+
+	resp, err := listEvents.MarshalJSON()
+	if err != nil {
+		return fmt.Errorf("failed to MarshalJSON(): %v", err)
+	}
+	fmt.Println(string(resp))
+
 	return nil
 }

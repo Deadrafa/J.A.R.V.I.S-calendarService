@@ -6,5 +6,6 @@ import (
 
 type CalendarService interface {
 	CreateEvent(calEv models.CalendarEvent) error
-	// ListEvents(ctx context.Context, calID string, limit int) ([]models.CalendarEvent, error)
+	ListEvents() error
+	DeleteEvent(eventId string) error
 }
