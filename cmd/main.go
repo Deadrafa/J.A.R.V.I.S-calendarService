@@ -30,32 +30,4 @@ func main() {
 		log.Panic("Cервер не поднялся: ", err)
 	}
 
-	// event := models.CalendarEvent{
-	// 	Summary:     "Встреча с клиентом",
-	// 	Location:    "Офис, Центральная 7",
-	// 	Description: "Обсуждение нового проекта",
-	// 	StartDate: models.DateTimeAndZone{
-	// 		DateTime: "2025-06-09T14:00:00+07:00",
-	// 		TimeZone: "Asia/Novosibirsk",
-	// 	},
-	// 	EndDate: models.DateTimeAndZone{
-	// 		DateTime: "2025-06-09T15:30:00+07:00",
-	// 		TimeZone: "Asia/Novosibirsk",
-	// 	},
-	// }
-	// err = Calendar.CreateEvent(event)
-	// if err != nil {
-	// 	log.Fatalf("Ошибка CreateEvent(): %v", err)
-	// }
-
-	err = Calendar.ListEvents()
-	if err != nil {
-		log.Fatalf("Ошибка ListEvents(): %v", err)
-	}
-
-	// err = Calendar.DeleteEvent("m33i6oc1cauabjp0s3egaghltc")
-	// if err != nil {
-	// 	log.Fatalf("Ошибка DeleteEvent(): %v", err)
-	// }
-
 }

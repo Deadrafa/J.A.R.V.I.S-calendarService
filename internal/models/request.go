@@ -9,6 +9,6 @@ type CalendarEvent struct {
 }
 
 type DateTimeAndZone struct {
-	DateTime string `json:"date_time"`
-	TimeZone string `json:"time_zone"`
+	DateTime string `json:"date_time" validate:"required,datetime=2006-01-02T15:04:05"`
+	TimeZone string `json:"time_zone" validate:"required,timezone"`
 }
