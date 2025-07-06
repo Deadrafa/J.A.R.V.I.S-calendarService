@@ -7,6 +7,7 @@ import (
 
 	"github.com/Deadrafa/J.A.R.V.I.S-calendarService/internal/config"
 	"github.com/Deadrafa/J.A.R.V.I.S-calendarService/internal/handlers"
+	"github.com/Deadrafa/J.A.R.V.I.S-calendarService/internal/metrics"
 	"github.com/Deadrafa/J.A.R.V.I.S-calendarService/internal/service"
 )
 
@@ -24,7 +25,9 @@ func main() {
 		log.Fatalf("Ошибка NewCalendar(): %v", err)
 	}
 
-	handler := handlers.NewHandler(Calendar, "name", "pass")
+	Metrics := metrics.NewMetrics()
+	Metrics.Register()
+	handler := handlers.NewHandler(Calendar, Metrics, "name", "pass")
 	r := handler.InitRoutes()
 	if err := r.Run(cfg.Host + ":" + cfg.Port); err != nil {
 		log.Panic("Cервер не поднялся: ", err)
